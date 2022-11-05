@@ -18,6 +18,7 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
+  final GlobalKey<RoundedToggleState> _toggleKey = GlobalKey<RoundedToggleState>();
   bool toggle = false;
   bool going = false;
 
@@ -51,6 +52,7 @@ class _StartState extends State<Start> {
                 const Padding(padding: EdgeInsets.only(top: 50)),
                 Center(
                   child: RoundedToggle(
+                    key: _toggleKey,
                     box: box,
                     callback: (bool toggle) async {
                       setState(() {
@@ -74,7 +76,51 @@ class _StartState extends State<Start> {
                             opacity: value,
                             child: RegForm(
                               box: box,
-                              callback: (Map<String, Object> form) async {},
+                              callback: (Map<String, Object> form) async {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => Center(
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: Colors.transparent,
+                                        color: paletteYellow,
+                                        strokeWidth: 5,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                                await Future.delayed(const Duration(seconds: 1));
+                                var response = await User.signUp(form).catchError((err) {
+                                  nav.pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      padding: const EdgeInsets.all(20),
+                                      backgroundColor: Colors.transparent,
+                                      content: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.white,
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          '$err',
+                                          style: errorStyle,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                                if (response != null) {
+                                  nav.pop();
+                                  setState(() {
+                                    toggle = false;
+                                    _toggleKey.currentState?.toggle = toggle;
+                                  });
+                                }
+                              },
                             ),
                           );
                         },
@@ -105,19 +151,29 @@ class _StartState extends State<Start> {
                                   await Future.delayed(const Duration(seconds: 1));
                                   User? user = await User.signIn(form).catchError((err) {
                                     nav.pop();
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => Dialog(
-                                              elevation: 1,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  err,
-                                                  style: errorStyle,
-                                                  textAlign: TextAlign.center,
-                                                ),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        padding: const EdgeInsets.all(20),
+                                        backgroundColor: Colors.transparent,
+                                        content: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.white,
                                               ),
-                                            ));
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                '$err',
+                                                style: errorStyle,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
                                   });
                                   if (user != null) {
                                     nav.pop();

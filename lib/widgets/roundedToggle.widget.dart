@@ -8,11 +8,14 @@ class RoundedToggle extends StatefulWidget {
   const RoundedToggle({Key? key, required this.box, required this.callback}) : super(key: key);
 
   @override
-  State<RoundedToggle> createState() => _RoundedToggleState();
+  State<RoundedToggle> createState() => RoundedToggleState();
 }
 
-class _RoundedToggleState extends State<RoundedToggle> {
+class RoundedToggleState extends State<RoundedToggle> {
   bool toggle = false;
+  void setToggle(bool val) {
+    toggle = val;
+  }
 
   @override
   Widget build(BuildContext context) {

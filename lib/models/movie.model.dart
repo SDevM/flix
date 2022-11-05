@@ -33,19 +33,19 @@ class Movie {
         source['display'] as String,
       );
 
-  static Future<Map<String, Object?>> get(String id) async =>
+  static Future<Map<String, Object?>?> get(String id) async =>
       await _http.get(Uri.parse('$_baseUrl/$id'));
 
-  static Future<Map<String, Object?>> getMany(PagedFiltered pageFilter) async =>
+  static Future<Map<String, Object?>?> getMany(PagedFiltered pageFilter) async =>
       await _http.get(Uri.parse('$_baseUrl?${pageFilter.getQueryString()}'));
 
-  static Future<Map<String, Object?>> save(Map<String, Object> source) async =>
+  static Future<Map<String, Object?>?> save(Map<String, Object> source) async =>
       await _http.post(Uri.parse(_baseUrl), source);
 
-  Future<Map<String, Object?>> update() async =>
+  Future<Map<String, Object?>?> update() async =>
       await _http.patch(Uri.parse('$_baseUrl/$_id'), toJson());
 
-  Future<Map<String, Object?>> delete() async => await _http.delete(Uri.parse('$_baseUrl/$_id'));
+  Future<Map<String, Object?>?> delete() async => await _http.delete(Uri.parse('$_baseUrl/$_id'));
 
   from(Map<String, Object> source) {
     _id = source['_id'] as String? ?? _id;

@@ -1,1 +1,1 @@
-const String apiUrl = 'flix-api.herokuapp.com/api/v1';
+const String apiUrl = 'https://amber-flixapi.herokuapp.com/api/v1';

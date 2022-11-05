@@ -26,28 +26,58 @@ class _RegFormState extends State<RegForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CustomTextField(
-            title: 'Username',
+            title: 'Name',
             obscure: false,
-            onSaved: (val) {},
-            validator: (val) {},
+            onSaved: (val) {
+              form['name'] = val ?? '';
+            },
+            validator: (val) {
+              if (val != null) if (val.length < 5) return 'Username too short';
+              return null;
+            },
           ),
           CustomTextField(
             title: 'Email',
             obscure: false,
-            onSaved: (val) {},
-            validator: (val) {},
+            onSaved: (val) {
+              form['email'] = val ?? '';
+            },
+            validator: (val) {
+              if (val == null || val.isEmpty) {
+                return 'Please enter an email address';
+              }
+              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$")
+                  .hasMatch(val)) {
+                return 'Invalid email address';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             title: 'Password',
             obscure: true,
-            onSaved: (val) {},
-            validator: (val) {},
+            onSaved: (val) {
+              form['password'] = val ?? '';
+            },
+            validator: (val) {
+              if (val == null || val.isEmpty) {
+                return 'Please enter password';
+              }
+              if (!RegExp(r"(?=.*\d)(?=.*[A-Z])(?=.*[a-z])((?=.*[^\w\d\s:])|(?=.*[_]))([^\s])*$")
+                  .hasMatch(val)) {
+                return 'Password does not meet requirements \nPassword must be at least eight characters \nPassword must have one letter \nPassword must have one number \nPassword must have one symbol';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             title: 'Confirm Password',
             obscure: true,
             onSaved: (val) {},
-            validator: (val) {},
+            validator: (val) {
+              if (val != form['password']) return 'Passwords do not match';
+              return null;
+            },
           ),
           Container(
             height: 80,
@@ -68,8 +98,8 @@ class _RegFormState extends State<RegForm> {
                 ),
               ),
               onPressed: () {
+                formKey.currentState!.save();
                 if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
                   widget.callback(form);
                 }
               },

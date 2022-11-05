@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Hi'),
+      body: Text(widget.master.userModel?.toJson()['name'] as String),
     );
   }
 }

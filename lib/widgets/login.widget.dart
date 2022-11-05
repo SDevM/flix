@@ -77,8 +77,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 onPressed: () {
+                  formKey.currentState!.save();
                   if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
                     widget.callback(form);
                   }
                 },
