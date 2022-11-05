@@ -4,7 +4,7 @@ import '../utils/httpTools.dart';
 const String _baseUrl = '/movies';
 HTTP _http = HTTP();
 
-class Post {
+class Movie {
   String _id;
   String _title;
   String _year;
@@ -13,7 +13,7 @@ class Post {
   String _preview;
   String _display;
 
-  Post(
+  Movie(
     this._id,
     this._title,
     this._year,
@@ -23,7 +23,7 @@ class Post {
     this._display,
   );
 
-  factory Post.fromJson(Map<String, Object> source) => Post(
+  factory Movie.fromJson(Map<String, Object> source) => Movie(
         source['_id'] as String,
         source['title'] as String,
         source['year'] as String,

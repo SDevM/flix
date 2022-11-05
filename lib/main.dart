@@ -1,7 +1,14 @@
+import 'package:flix/models/master.model.dart';
 import 'package:flix/screens/start.screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 
@@ -11,6 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Master master = Master();
     return MaterialApp(
       title: 'Flix',
       theme: ThemeData(
@@ -23,9 +31,12 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.indigo,
+        backgroundColor: Colors.black,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: GoogleFonts.latoTextTheme().apply(bodyColor: Colors.white),
       ),
-      home: const Start(),
+      home: Start(master: master),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

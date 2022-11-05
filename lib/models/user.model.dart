@@ -24,7 +24,7 @@ class User {
   static Future<Map<String, Object?>> signUp(Map<String, Object?> source) async =>
       await _http.post(Uri.parse(baseUrl), source);
 
-  static Future<User> signIn(Map<String, Object?> source) async =>
+  static Future<User?> signIn(Map<String, Object?> source) async =>
       User.fromJson(await _http.post(Uri.parse('$baseUrl/login'), source));
 
   Future<Map<String, Object?>> session() async => await _http.get(Uri.parse(baseUrl));
