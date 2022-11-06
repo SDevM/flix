@@ -99,17 +99,24 @@ class _StartState extends State<Start> {
                                     SnackBar(
                                       padding: const EdgeInsets.all(20),
                                       backgroundColor: Colors.transparent,
-                                      content: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          color: Colors.white,
-                                        ),
-                                        padding: const EdgeInsets.all(10),
-                                        child: Text(
-                                          '$err',
-                                          style: errorStyle,
-                                          textAlign: TextAlign.center,
-                                        ),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.white,
+                                              ),
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                '$err',
+                                                style: errorStyle,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );
@@ -159,16 +166,18 @@ class _StartState extends State<Start> {
                                         content: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                color: Colors.white,
-                                              ),
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                '$err',
-                                                style: errorStyle,
-                                                textAlign: TextAlign.center,
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  color: Colors.white,
+                                                ),
+                                                padding: const EdgeInsets.all(10),
+                                                child: Text(
+                                                  '$err',
+                                                  style: errorStyle,
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ),
                                             ),
                                           ],
