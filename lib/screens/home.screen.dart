@@ -13,6 +13,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Image.asset('images/Logo_Flix.png'),
+      ),
       body: Text(widget.master.userModel?.toJson()['name'] as String),
     );
   }

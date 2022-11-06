@@ -28,7 +28,8 @@ class HTTP {
         throw data['message'] as String;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        throw 'Internal Error, please check to ensure that you have a stable internet connection. \n The server may also be down, in which case, our team is working to fix this problem.';
+        // throw 'Internal Error, please check to ensure that you have a stable internet connection. \nThe server may also be down, in which case, our team is working to fix this problem.';
+        throw '$e';
       }
     }
   }
@@ -43,7 +44,6 @@ class HTTP {
       Map<String, Object?> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
-      print(e);
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
@@ -51,7 +51,8 @@ class HTTP {
         throw data['message'] as String;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        throw 'Internal Error, please check to ensure that you have a stable internet connection. \n The server may also be down, in which case, our team is working to fix this problem.';
+        // throw 'Internal Error, please check to ensure that you have a stable internet connection. \nThe server may also be down, in which case, our team is working to fix this problem.';
+        throw '$e';
       }
     }
   }
@@ -73,7 +74,8 @@ class HTTP {
         throw data['message'] as String;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        throw 'Internal Error, please check to ensure that you have a stable internet connection. \n The server may also be down, in which case, our team is working to fix this problem.';
+        // throw 'Internal Error, please check to ensure that you have a stable internet connection. \nThe server may also be down, in which case, our team is working to fix this problem.';
+        throw '$e';
       }
     }
   }
@@ -93,7 +95,8 @@ class HTTP {
         throw data['message'] as String;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        throw 'Internal Error, please check to ensure that you have a stable internet connection. \nThe server may also be down, in which case, our team is working to fix this problem.';
+        // throw 'Internal Error, please check to ensure that you have a stable internet connection. \nThe server may also be down, in which case, our team is working to fix this problem.';
+        throw '$e';
       }
     }
   }
