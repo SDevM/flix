@@ -29,7 +29,7 @@ class _RegFormState extends State<RegForm> {
             title: 'Name',
             obscure: false,
             onSaved: (val) {
-              form['name'] = val ?? '';
+              form['name'] = val?.trim() ?? '';
             },
             validator: (val) {
               if (val != null) if (val.length < 5) return 'Username too short';
@@ -40,7 +40,7 @@ class _RegFormState extends State<RegForm> {
             title: 'Email',
             obscure: false,
             onSaved: (val) {
-              form['email'] = val ?? '';
+              form['email'] = val?.trim() ?? '';
             },
             validator: (val) {
               if (val == null || val.isEmpty) {
@@ -57,7 +57,7 @@ class _RegFormState extends State<RegForm> {
             title: 'Password',
             obscure: true,
             onSaved: (val) {
-              form['password'] = val ?? '';
+              form['password'] = val?.trim() ?? '';
             },
             validator: (val) {
               if (val == null || val.isEmpty) {

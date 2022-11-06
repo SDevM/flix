@@ -28,7 +28,7 @@ class _LoginFormState extends State<LoginForm> {
             title: 'Email',
             obscure: false,
             onSaved: (val) {
-              if (val != null) form['email'] = val;
+              form['email'] = val?.trim() ?? '';
             },
             validator: (val) {
               if (val == null || val.isEmpty) {
@@ -45,7 +45,7 @@ class _LoginFormState extends State<LoginForm> {
             title: 'Password',
             obscure: true,
             onSaved: (val) {
-              if (val != null) form['email'] = val;
+              form['password'] = val?.trim() ?? '';
             },
             validator: (val) {
               if (val == null || val.isEmpty) {
