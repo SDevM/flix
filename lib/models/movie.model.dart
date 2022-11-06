@@ -23,14 +23,14 @@ class Movie {
     this._display,
   );
 
-  factory Movie.fromJson(Map<String, Object> source) => Movie(
-        source['_id'] as String,
-        source['title'] as String,
-        source['year'] as String,
-        source['rating'] as String,
-        source['description'] as String,
-        source['preview'] as String,
-        source['display'] as String,
+  factory Movie.fromJson(Map<String, Object?> source) => Movie(
+        (source['_id'] ?? '') as String,
+        (source['title'] ?? '') as String,
+        (source['year'] ?? '') as String,
+        (source['rating'] ?? '') as String,
+        (source['description'] ?? '') as String,
+        (source['preview'] ?? '') as String,
+        (source['display'] ?? '') as String,
       );
 
   static Future<Map<String, Object?>?> get(String id) async =>

@@ -12,12 +12,12 @@ class User {
 
   User(this._id, this._name, this._email, this._password);
 
-  factory User.fromJson(Map<String, Object> source) {
+  factory User.fromJson(Map<String, Object?> source) {
     return User(
-      source['_id'] as String,
-      source['name'] as String,
-      source['email'] as String,
-      source['password'] as String,
+      (source['_id'] ?? '') as String,
+      (source['name'] ?? '') as String,
+      (source['email'] ?? '') as String,
+      (source['password'] ?? '') as String,
     );
   }
 
@@ -25,7 +25,7 @@ class User {
       await _http.post(Uri.parse(baseUrl), source);
 
   static Future<User?> signIn(Map<String, Object> source) async =>
-      User.fromJson((await _http.post(Uri.parse('$baseUrl/login'), source))['data'] as Map<String, Object>);
+      User.fromJson((await _http.post(Uri.parse('$baseUrl/login'), source))['data'] as Map<String, Object?>);
 
   Future<Map<String, Object?>?> session() async => await _http.get(Uri.parse(baseUrl));
 
@@ -43,7 +43,7 @@ class User {
     _password = source['password'] as String? ?? _password;
   }
 
-  Map<String, Object?> toJson() {
+  Map<String, Object> toJson() {
     return {
       '_id': _id,
       'email': _email,

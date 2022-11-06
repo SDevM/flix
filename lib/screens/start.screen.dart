@@ -30,8 +30,9 @@ class _StartState extends State<Start> {
         children: [
           Image.asset(
             'images/bkg.jpg',
-            width: box.maxWidth,
-            height: box.maxHeight,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
           ),
           Container(
             width: double.infinity,
