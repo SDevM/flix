@@ -1,7 +1,7 @@
 import 'package:flix/models/user.model.dart';
 import 'package:flix/screens/home.screen.dart';
 import 'package:flix/utils/colors.dart';
-import 'package:flix/utils/text_styles.dart';
+import 'package:flix/widgets/error_snackbar.widget.dart';
 import 'package:flix/widgets/login.widget.dart';
 import 'package:flix/widgets/register.widget.dart';
 import 'package:flix/widgets/roundedToggle.widget.dart';
@@ -34,13 +34,8 @@ class _StartState extends State<Start> {
             height: double.infinity,
             fit: BoxFit.cover,
           ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.black.withOpacity(0.7),
-          ),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.black.withOpacity(0.7),
             body: ListView(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 175)),
@@ -97,29 +92,7 @@ class _StartState extends State<Start> {
                                 var response = await User.signUp(form).catchError((err) {
                                   nav.pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      padding: const EdgeInsets.all(20),
-                                      backgroundColor: Colors.transparent,
-                                      content: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                color: Colors.white,
-                                              ),
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                '$err',
-                                                style: errorStyle,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    ErrorSnackBar(err: '$err'),
                                   );
                                 });
                                 if (response != null) {
@@ -161,29 +134,7 @@ class _StartState extends State<Start> {
                                   User? user = await User.signIn(form).catchError((err) {
                                     nav.pop();
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        padding: const EdgeInsets.all(20),
-                                        backgroundColor: Colors.transparent,
-                                        content: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  color: Colors.white,
-                                                ),
-                                                padding: const EdgeInsets.all(10),
-                                                child: Text(
-                                                  '$err',
-                                                  style: errorStyle,
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      ErrorSnackBar(err: '$err'),
                                     );
                                   });
                                   if (user != null) {

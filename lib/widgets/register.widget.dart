@@ -32,8 +32,13 @@ class _RegFormState extends State<RegForm> {
               form['name'] = val?.trim() ?? '';
             },
             validator: (val) {
-              if (val != null) if (val.length < 5) return 'Username too short';
-              return null;
+              if (val == null || val.trim().isEmpty) {
+                return 'Please enter a username';
+              } else if (val.trim().length < 5) {
+                return 'Username too short';
+              } else {
+                return null;
+              }
             },
           ),
           CustomTextField(
@@ -45,9 +50,9 @@ class _RegFormState extends State<RegForm> {
             validator: (val) {
               if (val == null || val.isEmpty) {
                 return 'Please enter an email address';
-              }
-              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$")
-                  .hasMatch(val)) {
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$")
+                  .hasMatch(val.trim())) {
                 return 'Invalid email address';
               }
               return null;
@@ -57,7 +62,7 @@ class _RegFormState extends State<RegForm> {
             title: 'Password',
             obscure: true,
             onSaved: (val) {
-              form['password'] = val?.trim() ?? '';
+              form['password'] = val ?? '';
             },
             validator: (val) {
               if (val == null || val.isEmpty) {

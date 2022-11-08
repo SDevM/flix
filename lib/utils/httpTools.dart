@@ -33,7 +33,6 @@ class PagedFiltered {
             i == filterValues.length ? 'value=${filterValues[i]}&' : 'value=${filterValues[i]}';
       }
     }
-
     return '$pageString${filtering ? '&' : ''}$filterString';
   }
 }

@@ -4,38 +4,38 @@ const String baseUrl = '/users';
 HTTP _http = HTTP();
 
 class User {
-  String _id;
-  String _name;
-  String _email;
-  String _password;
-  List<String> _favorites = [];
+  dynamic _id;
+  dynamic _name;
+  dynamic _email;
+  dynamic _password;
+  List<dynamic> _favorites = [];
 
   User(this._id, this._name, this._email, this._password);
 
-  factory User.fromJson(Map<String, Object?> source) {
+  factory User.fromJson(Map<String, dynamic> source) {
     return User(
-      (source['_id'] ?? '') as String,
-      (source['name'] ?? '') as String,
-      (source['email'] ?? '') as String,
-      (source['password'] ?? '') as String,
+      source['_id'] ?? '',
+      source['name'] ?? '',
+      source['email'] ?? '',
+      source['password'] ?? '',
     );
   }
 
-  static Future<Map<String, Object?>?> signUp(Map<String, Object> source) async =>
+  static Future<Map<String, dynamic>?> signUp(Map<String, Object> source) async =>
       await _http.post(Uri.parse(baseUrl), source);
 
   static Future<User?> signIn(Map<String, Object> source) async =>
-      User.fromJson((await _http.post(Uri.parse('$baseUrl/login'), source))['data'] as Map<String, Object?>);
+      User.fromJson((await _http.post(Uri.parse('$baseUrl/login'), source))['data'] as Map<String, dynamic>);
 
-  Future<Map<String, Object?>?> session() async => await _http.get(Uri.parse(baseUrl));
+  Future<Map<String, dynamic>?> session() async => await _http.get(Uri.parse(baseUrl));
 
-  Future<Map<String, Object?>?> logOut() async => await _http.delete(Uri.parse('/logout'));
+  Future<Map<String, dynamic>?> logOut() async => await _http.delete(Uri.parse('/logout'));
 
-  Future<Map<String, Object?>?> delete() async => await _http.delete(Uri.parse(baseUrl));
+  Future<Map<String, dynamic>?> delete() async => await _http.delete(Uri.parse(baseUrl));
 
-  Future<Map<String, Object?>?> update() async => await _http.patch(Uri.parse(baseUrl), toJson());
+  Future<Map<String, dynamic>?> update() async => await _http.patch(Uri.parse(baseUrl), toJson());
 
-  from(Map<String, Object?> source) {
+  from(Map<String, dynamic> source) {
     _id = source['_id'] as String? ?? _id;
     _favorites = source['favorites'] as List<String>? ?? _favorites;
     _name = source['name'] as String? ?? _name;
