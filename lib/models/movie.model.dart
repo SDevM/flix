@@ -67,7 +67,7 @@ class Movie {
     _year = source['year'] as String? ?? _year;
     _rating = source['rating'] as String? ?? _rating;
     _description = source['description'] as String? ?? _description;
-    _categories = source['categories'] as List<String>? ?? _categories;
+    _categories = source['categories'] as List<dynamic>? ?? _categories;
     _clip = source['clip'] as String? ?? _clip;
     _image = source['image'] as String? ?? _image;
   }

@@ -10,7 +10,7 @@ class User {
   dynamic _password;
   List<dynamic> _favorites = [];
 
-  User(this._id, this._name, this._email, this._password);
+  User(this._id, this._name, this._email, this._password, this._favorites);
 
   factory User.fromJson(Map<String, dynamic> source) {
     return User(
@@ -18,6 +18,7 @@ class User {
       source['name'] ?? '',
       source['email'] ?? '',
       source['password'] ?? '',
+      source['favorites'] ?? [],
     );
   }
 
@@ -37,7 +38,7 @@ class User {
 
   from(Map<String, dynamic> source) {
     _id = source['_id'] as String? ?? _id;
-    _favorites = source['favorites'] as List<String>? ?? _favorites;
+    _favorites = source['favorites'] as List<dynamic>? ?? _favorites;
     _name = source['name'] as String? ?? _name;
     _email = source['email'] as String? ?? _email;
     _password = source['password'] as String? ?? _password;

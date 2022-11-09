@@ -2,22 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flix/environment.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HTTP {
   final Dio _dio = Dio();
-  final Map<String, String> headers = {
-    "Access-Control-Allow-Credentials": "true",
-  };
 
   HTTP() {
     _dio.options.baseUrl = apiUrl;
-    _dio.options.headers = headers;
   }
 
   Future<Map<String, dynamic>?> get(Uri uri) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.getUri(uri);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null && resp.headers['jwt_auth']!.isNotEmpty) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
@@ -38,9 +39,13 @@ class HTTP {
     Uri uri,
     Map<String, dynamic> payload,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.postUri(uri, data: payload);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null && resp.headers['jwt_auth']!.isNotEmpty) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
@@ -56,13 +61,18 @@ class HTTP {
       }
     }
   }
+
   Future<Map<String, dynamic>> postFD(
     Uri uri,
     FormData payload,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.postUri(uri, data: payload);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null && resp.headers['jwt_auth']!.isNotEmpty) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
@@ -83,9 +93,13 @@ class HTTP {
     Uri uri,
     Map<String, dynamic> payload,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.patchUri(uri, data: payload);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null && resp.headers['jwt_auth']!.isNotEmpty) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
@@ -101,13 +115,18 @@ class HTTP {
       }
     }
   }
+
   Future<Map<String, dynamic>> patchFD(
     Uri uri,
     FormData payload,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.patchUri(uri, data: payload);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
       return (data);
     } on DioError catch (e) {
@@ -125,11 +144,14 @@ class HTTP {
   }
 
   Future<Map<String, dynamic>> delete(Uri uri) async {
+    final prefs = await SharedPreferences.getInstance();
+    _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {
       Response<String> resp = await _dio.deleteUri(uri);
-      // resp.headers['jwt_auth'];
+      if (resp.headers['jwt_auth'] != null) {
+        prefs.setString('jwt_auth', resp.headers['jwt_auth']![0]);
+      }
       Map<String, dynamic> data = json.decode(resp.data!);
-      print(data);
       return (data);
     } on DioError catch (e) {
       // The request was made and the server responded with a status code

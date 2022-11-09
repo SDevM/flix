@@ -1,5 +1,6 @@
 import 'package:flix/screens/home.screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../environment.dart';
 import '../models/master.model.dart';
 import '../models/movie.model.dart';
@@ -107,12 +108,23 @@ class _CatalogueState extends State<Catalogue> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               clipBehavior: Clip.antiAlias,
-                              child: Image.network(
-                                '$apiUrl/s3/${widget.master.movieCatalogue[step].toJson()['image']}',
-                                isAntiAlias: true,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
+                              child: FutureBuilder(
+                                  future: SharedPreferences.getInstance(),
+                                  builder: (context, snap) {
+                                    if (snap.connectionState == ConnectionState.done) {
+                                      return Image.network(
+                                        '$apiUrl/s3/${widget.master.movieCatalogue[step].toJson()['image']}',
+                                        headers: {
+                                          'Authorization': snap.data!.getString('jwt_auth') ?? '',
+                                        },
+                                        isAntiAlias: true,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      );
+                                    } else {
+                                      return Image.asset('images/placeholder.jpg');
+                                    }
+                                  }),
                             ),
                           ),
                           Text('${widget.master.movieCatalogue[step].toJson()['title']}')

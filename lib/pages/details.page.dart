@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flix/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import '../environment.dart';
 import '../models/master.model.dart';
@@ -28,22 +29,18 @@ class _DetailsState extends State<Details> {
   bool favorite = false;
 
   @override
+  void dispose() {
+    super.dispose();
+    _video.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _movie = widget.master.movieModel!.toJson();
     _user = widget.master.userModel!.toJson();
-    int indexOf = (_user!['favorites'] as List<String>).indexOf(_movie!['_id'] as String);
+    int indexOf = (_user!['favorites'] as List).indexOf(_movie!['_id'] as String);
     if (indexOf > -1) favorite = true;
-    _video = VideoPlayerController.network(
-      '$apiUrl/s3/${_movie!['clip']}',
-    );
-    _video.initialize();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _video.dispose();
   }
 
   @override
@@ -55,16 +52,33 @@ class _DetailsState extends State<Details> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: widget.box.maxWidth,
-            height: widget.box.maxWidth * 0.5,
-            child: Chewie(
-              controller: ChewieController(
-                videoPlayerController: _video,
-                allowFullScreen: false,
-              ),
-            ),
-          ),
+          FutureBuilder(future: (() async {
+            var pref = await SharedPreferences.getInstance();
+            _video = VideoPlayerController.network('$apiUrl/s3/${_movie!['clip']}', httpHeaders: {
+              'Authorization': pref.getString('jwt_auth') ?? '',
+            });
+            _video.initialize();
+            return _video;
+          })(), builder: (context, snap) {
+            if (snap.connectionState == ConnectionState.done) {
+              return SizedBox(
+                width: widget.box.maxWidth,
+                height: widget.box.maxWidth * 0.5,
+                child: Chewie(
+                  controller: ChewieController(
+                    videoPlayerController: snap.data!,
+                    allowFullScreen: false,
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                width: widget.box.maxWidth,
+                height: widget.box.maxWidth * 0.5,
+                color: Colors.black,
+              );
+            }
+          }),
           Text(
             '${_movie?['title']}',
             style: titleStyle,
@@ -90,11 +104,23 @@ class _DetailsState extends State<Details> {
               padding: const EdgeInsets.symmetric(vertical: 25),
               child: Stack(
                 children: [
-                  Image.network(
-                    '$apiUrl/s3/${_movie?['image']}',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
+                  FutureBuilder(
+                      future: SharedPreferences.getInstance(),
+                      builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.done) {
+                          return Image.network(
+                            '$apiUrl/s3/${_movie?['image']}',
+                            headers: {
+                              'Authorization': snap.data!.getString('jwt_auth') ?? '',
+                            },
+                            isAntiAlias: true,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          );
+                        } else {
+                          return Image.asset('images/placeholder.jpg');
+                        }
+                      }),
                   GestureDetector(
                     onTap: () async {
                       Map<String, dynamic>? response;
@@ -113,11 +139,9 @@ class _DetailsState extends State<Details> {
                         ),
                       );
                       if (favorite) {
-                        favorite = false;
-                        (_user?['favorites'] as List<String>).remove(_movie!['_id'] as String);
+                        (_user?['favorites'] as List).remove(_movie!['_id'] as String);
                       } else {
-                        favorite = true;
-                        (_user?['favorites'] as List<String>).add(_movie!['_id'] as String);
+                        (_user?['favorites'] as List).add(_movie!['_id'] as String);
                       }
                       widget.master.userModel!.from(_user!);
                       response = await widget.master.userModel!.update().catchError((err) {
@@ -125,6 +149,9 @@ class _DetailsState extends State<Details> {
                         messenger.showSnackBar(ErrorSnackBar(err: '$err'));
                       });
                       if (response != null) {
+                        setState(() {
+                          favorite = !favorite;
+                        });
                         nav.pop();
                         messenger.showSnackBar(SuccessSnackBar(msg: 'Favorites Updated'));
                       }
