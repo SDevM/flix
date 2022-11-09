@@ -57,7 +57,7 @@ class _DetailsState extends State<Details> {
             _video = VideoPlayerController.network('$apiUrl/s3/${_movie!['clip']}', httpHeaders: {
               'Authorization': pref.getString('jwt_auth') ?? '',
             });
-            _video.initialize();
+            await _video.initialize();
             return _video;
           })(), builder: (context, snap) {
             if (snap.connectionState == ConnectionState.done) {

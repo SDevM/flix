@@ -106,6 +106,7 @@ class _RegFormState extends State<RegForm> {
                 formKey.currentState!.save();
                 if (formKey.currentState!.validate()) {
                   widget.callback(form);
+                  formKey.currentState!.reset();
                 }
               },
             ),

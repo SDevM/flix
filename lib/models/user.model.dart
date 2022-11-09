@@ -25,10 +25,11 @@ class User {
   static Future<Map<String, dynamic>?> signUp(Map<String, Object> source) async =>
       await _http.post(Uri.parse(baseUrl), source);
 
-  static Future<User?> signIn(Map<String, Object> source) async =>
-      User.fromJson((await _http.post(Uri.parse('$baseUrl/login'), source))['data'] as Map<String, dynamic>);
+  static Future<User?> signIn(Map<String, Object> source) async => User.fromJson(
+      (await _http.post(Uri.parse('$baseUrl/login'), source))!['data'] as Map<String, dynamic>);
 
-  Future<Map<String, dynamic>?> session() async => await _http.get(Uri.parse(baseUrl));
+  static Future<User?> session() async =>
+      User.fromJson((await _http.get(Uri.parse(baseUrl)))!['data'] as Map<String, dynamic>);
 
   Future<Map<String, dynamic>?> logOut() async => await _http.delete(Uri.parse('/logout'));
 

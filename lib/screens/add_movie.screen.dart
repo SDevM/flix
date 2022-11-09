@@ -180,8 +180,8 @@ class _AddMovieFormState extends State<AddMovieForm> {
                     onPressed: () {
                       formKey.currentState!.save();
                       if (formKey.currentState!.validate()) {
-                        print(form);
                         widget.callback(form);
+                        formKey.currentState!.reset();
                       }
                     },
                   ),

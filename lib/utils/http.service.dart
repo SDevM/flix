@@ -35,7 +35,7 @@ class HTTP {
     }
   }
 
-  Future<Map<String, dynamic>> post(
+  Future<Map<String, dynamic>?> post(
     Uri uri,
     Map<String, dynamic> payload,
   ) async {
@@ -62,7 +62,7 @@ class HTTP {
     }
   }
 
-  Future<Map<String, dynamic>> postFD(
+  Future<Map<String, dynamic>?> postFD(
     Uri uri,
     FormData payload,
   ) async {
@@ -89,7 +89,7 @@ class HTTP {
     }
   }
 
-  Future<Map<String, dynamic>> patch(
+  Future<Map<String, dynamic>?> patch(
     Uri uri,
     Map<String, dynamic> payload,
   ) async {
@@ -116,7 +116,7 @@ class HTTP {
     }
   }
 
-  Future<Map<String, dynamic>> patchFD(
+  Future<Map<String, dynamic>?> patchFD(
     Uri uri,
     FormData payload,
   ) async {
@@ -143,7 +143,7 @@ class HTTP {
     }
   }
 
-  Future<Map<String, dynamic>> delete(Uri uri) async {
+  Future<Map<String, dynamic>?> delete(Uri uri) async {
     final prefs = await SharedPreferences.getInstance();
     _dio.options.headers['Authorization'] = prefs.getString('jwt_auth') ?? '';
     try {

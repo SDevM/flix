@@ -1,4 +1,6 @@
 import 'package:flix/models/master.model.dart';
+import 'package:flix/models/user.model.dart';
+import 'package:flix/screens/home.screen.dart';
 import 'package:flix/screens/start.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +37,24 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         textTheme: GoogleFonts.latoTextTheme().apply(bodyColor: Colors.white),
       ),
-      home: Start(master: master),
+      home: FutureBuilder(
+        future: User.session(),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.done) {
+            if (snap.hasError) {
+              return Start(master: master);
+            } else if (snap.hasData) {
+              master.userModel = snap.data!;
+              return Home(master: master);
+            }
+            throw 'No Data';
+          } else {
+            return Center(
+              child: Image.asset('images/Logo_Flix.png'),
+            );
+          }
+        },
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -82,6 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                 formKey.currentState!.save();
                 if (formKey.currentState!.validate()) {
                   widget.callback(form);
+                  formKey.currentState!.reset();
                 }
               },
             ),
