@@ -1,6 +1,7 @@
 import 'package:flix/models/movie.model.dart';
 import 'package:flix/pages/catalogue.page.dart';
 import 'package:flix/pages/details.page.dart';
+import 'package:flix/pages/profile.page.dart';
 import 'package:flix/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,8 +36,11 @@ class _HomeState extends State<Home> {
             leadingWidth: box.maxWidth * 0.15,
             actions: [
               IconButton(
-                padding: const EdgeInsets.only(right: 10),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    page = HomePage.profile;
+                  });
+                },
                 icon: Icon(
                   Icons.person,
                   size: 35,
@@ -44,7 +48,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               IconButton(
-                padding: const EdgeInsets.only(right: 10),
                 onPressed: () async {
                   showDialog(
                     context: context,
@@ -113,6 +116,7 @@ class _HomeState extends State<Home> {
                         messenger.showSnackBar(
                           SuccessSnackBar(msg: 'Movie Made Successfully'),
                         );
+                        setState(() {});
                       }
                     },
                   ),
@@ -147,6 +151,15 @@ class _HomeState extends State<Home> {
                       });
                     },
                   );
+                case HomePage.profile:
+                  return Profile(
+                      box: box,
+                      master: widget.master,
+                      callback: (page) {
+                        setState(() {
+                          this.page = page;
+                        });
+                      });
               }
             },
           ),
@@ -156,4 +169,4 @@ class _HomeState extends State<Home> {
   }
 }
 
-enum HomePage { catalogue, details }
+enum HomePage { catalogue, details, profile }

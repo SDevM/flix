@@ -1,4 +1,5 @@
 import 'package:flix/screens/home.screen.dart';
+import 'package:flix/screens/search.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../environment.dart';
@@ -21,6 +22,8 @@ class Catalogue extends StatefulWidget {
 }
 
 class _CatalogueState extends State<Catalogue> {
+  String searchval = '';
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -41,31 +44,40 @@ class _CatalogueState extends State<Catalogue> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      return SearchScreen(search: searchval);
+                    }));
+                  },
+                  icon: const Icon(Icons.search),
                   color: paletteYellow,
                 ),
                 Expanded(
-                    child: TextField(
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      focusedBorder: OutlineInputBorder(
+                  child: TextField(
+                    onChanged: (val) {
+                      searchval = val;
+                    },
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
                             color: paletteGreen,
                             width: 2,
-                          )),
-                      hintText: 'Search Movies...',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5)),
-                )),
+                          ),
+                        ),
+                        hintText: 'Search Movies...',
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5)),
+                  ),
+                ),
               ],
             ),
           ),

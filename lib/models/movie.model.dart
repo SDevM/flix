@@ -46,6 +46,9 @@ class Movie {
   static Future<Map<String, dynamic>?> getMany(PagedFiltered pageFilter) async =>
       await _http.get(Uri.parse('$_baseUrl?${pageFilter.getQueryString()}'));
 
+  static Future<Map<String, dynamic>?> search(String search, int limit) async =>
+      await _http.get(Uri.parse('$_baseUrl?search=$search&limit=$limit'));
+
   static Future<Map<String, dynamic>?> save(Map<String, Object> source) async {
     source['image'] = await MultipartFile.fromFile(source['image'] as String);
     source['clip'] = await MultipartFile.fromFile(source['clip'] as String);
